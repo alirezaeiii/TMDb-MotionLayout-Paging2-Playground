@@ -37,7 +37,7 @@ import com.sample.android.tmdb.ui.paging.main.tvshow.*
 import com.sample.android.tmdb.util.conditional
 
 @Composable
-fun FeedCollectionList(
+fun FeedScreen(
     navType: NavType,
     collection: List<FeedWrapper>,
     onFeedClick: (TmdbItem) -> Unit

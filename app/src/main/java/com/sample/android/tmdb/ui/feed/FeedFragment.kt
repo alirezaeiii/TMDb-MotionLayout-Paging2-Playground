@@ -22,7 +22,7 @@ abstract class FeedFragment<T : TmdbItem> : BaseNavigationFragment<Nothing>() {
         return composeView {
             TmdbTheme {
                 Content(viewModel) {
-                    FeedCollectionList(
+                    FeedScreen(
                         navType,
                         it
                     ) { tmdbItem ->
