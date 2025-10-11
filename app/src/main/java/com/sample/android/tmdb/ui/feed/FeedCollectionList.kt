@@ -1,5 +1,6 @@
 package com.sample.android.tmdb.ui.feed
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -84,70 +85,14 @@ private fun FeedCollection(
                 color = MaterialTheme.colors.onSurface,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .clickable {
-                        val activityClass = when (navType) {
-                            NavType.MOVIES -> {
-                                when (feedCollection.sortType) {
-                                    SortType.TRENDING -> {
-                                        TrendingMoviesActivity::class.java
-                                    }
-
-                                    SortType.MOST_POPULAR -> {
-                                        PopularMoviesActivity::class.java
-                                    }
-
-                                    SortType.UPCOMING -> {
-                                        UpcomingMoviesActivity::class.java
-                                    }
-
-                                    SortType.HIGHEST_RATED -> {
-                                        HighRateMoviesActivity::class.java
-                                    }
-
-                                    SortType.NOW_PLAYING -> {
-                                        NowPlayingMoviesActivity::class.java
-                                    }
-
-                                    SortType.DISCOVER -> {
-                                        DiscoverMoviesActivity::class.java
-                                    }
-                                }
-                            }
-
-                            NavType.TV_SERIES -> {
-                                when (feedCollection.sortType) {
-                                    SortType.TRENDING -> {
-                                        TrendingTVShowActivity::class.java
-                                    }
-
-                                    SortType.MOST_POPULAR -> {
-                                        PopularTVShowActivity::class.java
-                                    }
-
-                                    SortType.UPCOMING -> {
-                                        OnTheAirTVShowActivity::class.java
-                                    }
-
-                                    SortType.HIGHEST_RATED -> {
-                                        HighRateTVShowActivity::class.java
-                                    }
-
-                                    SortType.NOW_PLAYING -> {
-                                        AiringTodayTVShowActivity::class.java
-                                    }
-
-                                    SortType.DISCOVER -> {
-                                        DiscoverTVShowsActivity::class.java
-                                    }
-                                }
-                            }
-
-                            else -> throw RuntimeException("Unknown item to start paging Activity")
-                        }
-                        val intent = Intent(context, activityClass)
-                        context.startActivity(intent)
-                    }
                     .padding(Dimens.PaddingNormal)
+                    .clickable {
+                        moreFeedOnClick(
+                            context,
+                            navType,
+                            feedCollection.sortType
+                        )
+                    }
             )
         }
         Feeds(feedCollection.feeds, onFeedClick, index)
@@ -166,26 +111,23 @@ private fun Feeds(
         contentPadding = PaddingValues(start = Dimens.PaddingMicro, end = Dimens.PaddingMicro)
     ) {
         items(feeds) { feed ->
-            TmdbItem(feed, onFeedClick, index)
+            if (index % 3 == 0) {
+                TmdbCard(feed, 220.dp, feed.backdropUrl, onFeedClick)
+            } else {
+                TmdbCard(feed, 120.dp, feed.posterUrl, onFeedClick)
+            }
+
         }
     }
 }
 
 @Composable
-private fun TmdbItem(
+private fun TmdbCard(
     tmdbItem: TmdbItem,
-    onFeedClick: (TmdbItem) -> Unit,
-    index: Int
+    itemWidth: Dp,
+    imageUrl: String?,
+    onFeedClick: (TmdbItem) -> Unit
 ) {
-    val itemWidth: Dp
-    val imageUrl: String?
-    if (index % 3 == 0) {
-        itemWidth = 220.dp
-        imageUrl = tmdbItem.backdropUrl
-    } else {
-        itemWidth = 120.dp
-        imageUrl = tmdbItem.posterUrl
-    }
     Card(
         modifier = Modifier
             .padding(Dimens.PaddingSmall)
@@ -215,15 +157,84 @@ private fun TmdbItem(
     }
 }
 
+private fun moreFeedOnClick(
+    context: Context,
+    navType: NavType,
+    sortType: SortType
+) {
+    val activityClass = when (navType) {
+        NavType.MOVIES -> {
+            when (sortType) {
+                SortType.TRENDING -> {
+                    TrendingMoviesActivity::class.java
+                }
+
+                SortType.MOST_POPULAR -> {
+                    PopularMoviesActivity::class.java
+                }
+
+                SortType.UPCOMING -> {
+                    UpcomingMoviesActivity::class.java
+                }
+
+                SortType.HIGHEST_RATED -> {
+                    HighRateMoviesActivity::class.java
+                }
+
+                SortType.NOW_PLAYING -> {
+                    NowPlayingMoviesActivity::class.java
+                }
+
+                SortType.DISCOVER -> {
+                    DiscoverMoviesActivity::class.java
+                }
+            }
+        }
+
+        NavType.TV_SERIES -> {
+            when (sortType) {
+                SortType.TRENDING -> {
+                    TrendingTVShowActivity::class.java
+                }
+
+                SortType.MOST_POPULAR -> {
+                    PopularTVShowActivity::class.java
+                }
+
+                SortType.UPCOMING -> {
+                    OnTheAirTVShowActivity::class.java
+                }
+
+                SortType.HIGHEST_RATED -> {
+                    HighRateTVShowActivity::class.java
+                }
+
+                SortType.NOW_PLAYING -> {
+                    AiringTodayTVShowActivity::class.java
+                }
+
+                SortType.DISCOVER -> {
+                    DiscoverTVShowsActivity::class.java
+                }
+            }
+        }
+
+        else -> throw RuntimeException("Unknown item to start paging Activity")
+    }
+    val intent = Intent(context, activityClass)
+    context.startActivity(intent)
+}
+
 @Preview("default")
 @Composable
 fun FeedCardPreview() {
     TmdbTheme {
         val movie = Movie(1, "", null, null, null, "Movie", 1.0)
-        TmdbItem(
+        TmdbCard(
             tmdbItem = movie,
+            120.dp,
+            movie.posterUrl,
             onFeedClick = {},
-            0
         )
     }
 }
