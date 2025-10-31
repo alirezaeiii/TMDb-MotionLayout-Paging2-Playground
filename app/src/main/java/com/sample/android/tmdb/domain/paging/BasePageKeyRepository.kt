@@ -1,19 +1,18 @@
 package com.sample.android.tmdb.domain.paging
 
-import androidx.lifecycle.Transformations
 import androidx.annotation.MainThread
+import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
-import com.sample.android.tmdb.domain.model.TmdbItem
 import java.util.concurrent.Executor
 
-abstract class BasePageKeyRepository<T : TmdbItem>(
+abstract class BasePageKeyRepository(
     private val networkExecutor: Executor
-) : PageKeyRepository<T> {
+) : PageKeyRepository {
 
-    protected abstract val sourceFactory: BaseDataSourceFactory<T>
+    protected abstract val sourceFactory: BaseDataSourceFactory
 
     @MainThread
-    override fun getItems(): Listing<T> {
+    override fun getItems(): Listing {
 
         val livePagedList = LivePagedListBuilder(sourceFactory, PAGE_SIZE)
             // provide custom executor for network requests, otherwise it will default to

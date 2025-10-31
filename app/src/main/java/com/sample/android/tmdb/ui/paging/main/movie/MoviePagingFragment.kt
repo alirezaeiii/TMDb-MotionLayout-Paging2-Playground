@@ -3,11 +3,10 @@ package com.sample.android.tmdb.ui.paging.main.movie
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.tmdb.data.network.MovieService
-import com.sample.android.tmdb.domain.model.Movie
 import com.sample.android.tmdb.ui.paging.main.BaseMainPagingFragment
 import javax.inject.Inject
 
-abstract class MoviePagingFragment : BaseMainPagingFragment<Movie>() {
+abstract class MoviePagingFragment : BaseMainPagingFragment() {
 
     @Inject
     lateinit var api: MovieService

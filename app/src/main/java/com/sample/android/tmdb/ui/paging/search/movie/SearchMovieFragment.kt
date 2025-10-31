@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class SearchMovieFragment @Inject
 constructor() // Required empty public constructor
-    : BaseSearchFragment<Movie>() {
+    : BaseSearchFragment() {
 
     @Inject
     lateinit var factory: SearchMovieViewModel.Factory

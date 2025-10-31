@@ -13,9 +13,9 @@ class MoviePageKeyRepository(
     sortType: SortType,
     retryExecutor: Executor,
     context: Context
-) : BasePageKeyRepository<Movie>(retryExecutor) {
+) : BasePageKeyRepository(retryExecutor) {
 
-    override val sourceFactory: BaseDataSourceFactory<Movie> =
+    override val sourceFactory: BaseDataSourceFactory =
         MoviesDataSourceFactory(
             api = api,
             sortType = sortType,

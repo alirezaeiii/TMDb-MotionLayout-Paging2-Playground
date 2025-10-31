@@ -7,16 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sample.android.tmdb.R
 import com.sample.android.tmdb.domain.model.TmdbItem
 import com.sample.android.tmdb.domain.paging.NetworkState
-import java.util.*
+import java.util.Objects
 
-class TmdbAdapter<T : TmdbItem>(private val retryCallback: () -> Unit,
-                                private val tmdbClickCallback: TmdbClickCallback<T>
+class TmdbAdapter(private val retryCallback: () -> Unit,
+                                private val tmdbClickCallback: TmdbClickCallback<TmdbItem>
 )
-    : PagedListAdapter<T, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<T>() {
-    override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
+    : PagedListAdapter<TmdbItem, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<TmdbItem>() {
+    override fun areContentsTheSame(oldItem: TmdbItem, newItem: TmdbItem): Boolean =
             Objects.equals(oldItem, newItem)
 
-    override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
+    override fun areItemsTheSame(oldItem: TmdbItem, newItem: TmdbItem): Boolean =
             oldItem.id == newItem.id
 }) {
 

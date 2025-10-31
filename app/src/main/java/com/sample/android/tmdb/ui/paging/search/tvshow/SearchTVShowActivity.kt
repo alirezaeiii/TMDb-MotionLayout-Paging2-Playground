@@ -1,11 +1,10 @@
 package com.sample.android.tmdb.ui.paging.search.tvshow
 
 import com.sample.android.tmdb.R
-import com.sample.android.tmdb.domain.model.TVShow
 import com.sample.android.tmdb.ui.paging.search.SearchActivity
 import javax.inject.Inject
 
-class SearchTVShowActivity: SearchActivity<TVShow>() {
+class SearchTVShowActivity: SearchActivity() {
 
     @Inject
     lateinit var searchTVShowFragment: SearchTVShowFragment

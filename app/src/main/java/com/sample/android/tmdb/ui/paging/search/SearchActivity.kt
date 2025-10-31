@@ -10,13 +10,12 @@ import android.widget.SearchView.OnQueryTextListener
 import android.widget.TextView
 import com.sample.android.tmdb.R
 import com.sample.android.tmdb.databinding.ActivitySearchBinding
-import com.sample.android.tmdb.domain.model.TmdbItem
 import com.sample.android.tmdb.ui.base.BaseActivity
 import com.sample.android.tmdb.util.replaceFragmentInActivity
 
-abstract class SearchActivity<T : TmdbItem> : BaseActivity() {
+abstract class SearchActivity : BaseActivity() {
 
-    protected abstract val fragment: BaseSearchFragment<T>
+    protected abstract val fragment: BaseSearchFragment
 
     protected abstract val hintId: Int
 

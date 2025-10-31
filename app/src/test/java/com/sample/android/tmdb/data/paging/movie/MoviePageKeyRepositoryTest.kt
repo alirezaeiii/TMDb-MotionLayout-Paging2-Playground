@@ -5,11 +5,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagedList
 import com.google.common.collect.Lists
 import com.sample.android.tmdb.LoggingObserver
-import com.sample.android.tmdb.data.response.TMDbWrapper
-import com.sample.android.tmdb.data.response.NetworkMovie
-import com.sample.android.tmdb.domain.model.Movie
 import com.sample.android.tmdb.data.network.MovieService
-import com.sample.android.tmdb.domain.model.SortType.*
+import com.sample.android.tmdb.data.response.NetworkMovie
+import com.sample.android.tmdb.data.response.TMDbWrapper
+import com.sample.android.tmdb.domain.model.SortType.HIGHEST_RATED
+import com.sample.android.tmdb.domain.model.SortType.MOST_POPULAR
+import com.sample.android.tmdb.domain.model.SortType.NOW_PLAYING
+import com.sample.android.tmdb.domain.model.SortType.TRENDING
+import com.sample.android.tmdb.domain.model.SortType.UPCOMING
+import com.sample.android.tmdb.domain.model.TmdbItem
 import com.sample.android.tmdb.util.isNetworkAvailable
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -23,8 +27,8 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.anyInt
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.concurrent.Executor
 
@@ -109,9 +113,9 @@ class MoviePageKeyRepositoryTest {
         }
     }
 
-    private fun getObserver(repository: MoviePageKeyRepository): LoggingObserver<PagedList<Movie>> {
+    private fun getObserver(repository: MoviePageKeyRepository): LoggingObserver<PagedList<TmdbItem>> {
         val listing = repository.getItems()
-        val observer = LoggingObserver<PagedList<Movie>>()
+        val observer = LoggingObserver<PagedList<TmdbItem>>()
         listing.pagedList.observeForever(observer)
         return observer
     }

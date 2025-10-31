@@ -1,7 +1,6 @@
 package com.sample.android.tmdb.data.paging.search.movie
 
 import android.content.Context
-import com.sample.android.tmdb.domain.model.Movie
 import com.sample.android.tmdb.data.network.MovieService
 import com.sample.android.tmdb.domain.paging.BaseDataSourceFactory
 import com.sample.android.tmdb.domain.paging.BasePageKeyRepository
@@ -12,9 +11,9 @@ class SearchMoviePageKeyRepository(
     query: String,
     retryExecutor: Executor,
     context: Context
-) : BasePageKeyRepository<Movie>(retryExecutor) {
+) : BasePageKeyRepository(retryExecutor) {
 
-    override val sourceFactory: BaseDataSourceFactory<Movie> =
+    override val sourceFactory: BaseDataSourceFactory =
         SearchMovieDataSourceFactory(
             api = api,
             query = query,

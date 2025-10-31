@@ -13,11 +13,11 @@ import com.sample.android.tmdb.domain.paging.Status.RUNNING
 import com.sample.android.tmdb.ui.base.BaseNavigationFragment
 import com.sample.android.tmdb.widget.MarginDecoration
 
-abstract class BasePagingFragment<T : TmdbItem> : BaseNavigationFragment<FragmentMainBinding>() {
+abstract class BasePagingFragment : BaseNavigationFragment<FragmentMainBinding>() {
 
-    protected abstract val viewModel: BasePagingViewModel<T>
+    protected abstract val viewModel: BasePagingViewModel
 
-    protected lateinit var tmdbAdapter: TmdbAdapter<T>
+    protected lateinit var tmdbAdapter: TmdbAdapter
 
     protected open fun refresh() {
         viewModel.refresh()
@@ -30,8 +30,8 @@ abstract class BasePagingFragment<T : TmdbItem> : BaseNavigationFragment<Fragmen
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        tmdbAdapter = TmdbAdapter(viewModel::retry, object : TmdbClickCallback<T> {
-            override fun onClick(t: T) {
+        tmdbAdapter = TmdbAdapter(viewModel::retry, object : TmdbClickCallback<TmdbItem> {
+            override fun onClick(t: TmdbItem) {
                 startDetailActivity(t)
             }
         })

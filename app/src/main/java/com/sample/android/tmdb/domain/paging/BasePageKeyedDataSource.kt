@@ -12,10 +12,10 @@ import com.sample.android.tmdb.util.isNetworkAvailable
 import io.reactivex.Observable
 import java.util.concurrent.Executor
 
-abstract class BasePageKeyedDataSource<T : TmdbItem>(
+abstract class BasePageKeyedDataSource(
     private val retryExecutor: Executor,
     private val context: Context
-) : PageKeyedDataSource<Int, T>() {
+) : PageKeyedDataSource<Int, TmdbItem>() {
 
     // keep a function reference for the retry event
     private var retry: (() -> Any)? = null
@@ -42,13 +42,13 @@ abstract class BasePageKeyedDataSource<T : TmdbItem>(
         }
     }
 
-    protected abstract fun fetchItems(page: Int): Observable<List<T>>
+    protected abstract fun fetchItems(page: Int): Observable<List<TmdbItem>>
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, TmdbItem>) {
         // ignored, since we only ever append to our initial load
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, T>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, TmdbItem>) {
         _networkState.postValue(NetworkState.LOADING)
         loadItems(params.key).subscribe({
             _networkState.postValue(NetworkState.LOADED)
@@ -64,7 +64,7 @@ abstract class BasePageKeyedDataSource<T : TmdbItem>(
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, T>
+        callback: LoadInitialCallback<Int, TmdbItem>
     ) {
         _networkState.postValue(NetworkState.LOADING)
         _initialLoad.postValue(NetworkState.LOADING)
@@ -81,7 +81,7 @@ abstract class BasePageKeyedDataSource<T : TmdbItem>(
         }.also { DisposableManager.add(it) }
     }
 
-    private fun loadItems(page: Int): Observable<List<T>> =
+    private fun loadItems(page: Int): Observable<List<TmdbItem>> =
         Observable.fromCallable { context.isNetworkAvailable() }.switchMap {
             return@switchMap if (it) this.fetchItems(page)
             else Observable.error(NetworkException())

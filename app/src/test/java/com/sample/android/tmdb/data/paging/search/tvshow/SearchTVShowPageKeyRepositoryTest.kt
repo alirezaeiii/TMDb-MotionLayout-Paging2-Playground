@@ -5,10 +5,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagedList
 import com.google.common.collect.Lists
 import com.sample.android.tmdb.LoggingObserver
-import com.sample.android.tmdb.data.response.TMDbWrapper
-import com.sample.android.tmdb.data.response.NetworkTVShow
-import com.sample.android.tmdb.domain.model.TVShow
 import com.sample.android.tmdb.data.network.TVShowService
+import com.sample.android.tmdb.data.response.NetworkTVShow
+import com.sample.android.tmdb.data.response.TMDbWrapper
+import com.sample.android.tmdb.domain.model.TmdbItem
 import com.sample.android.tmdb.util.isNetworkAvailable
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -23,8 +23,8 @@ import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.anyInt
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.concurrent.Executor
 
@@ -62,7 +62,7 @@ class SearchTVShowPageKeyRepositoryTest {
         ))
 
         val listing = repository.getItems()
-        val observer = LoggingObserver<PagedList<TVShow>>()
+        val observer = LoggingObserver<PagedList<TmdbItem>>()
         listing.pagedList.observeForever(observer)
 
         with(observer.value) {
