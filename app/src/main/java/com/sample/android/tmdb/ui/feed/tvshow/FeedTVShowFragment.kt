@@ -3,7 +3,6 @@ package com.sample.android.tmdb.ui.feed.tvshow
 import androidx.lifecycle.ViewModelProvider
 import com.sample.android.tmdb.domain.model.TVShow
 import com.sample.android.tmdb.ui.feed.FeedFragment
-import com.sample.android.tmdb.ui.feed.NavType
 import javax.inject.Inject
 
 class FeedTVShowFragment @Inject
@@ -15,8 +14,4 @@ constructor() // Required empty public constructor
 
     override val viewModel
         get() = ViewModelProvider(this, factory)[FeedTVShowViewModel::class.java]
-
-
-    override val navType: NavType
-        get() = NavType.TV_SERIES
 }

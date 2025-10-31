@@ -29,6 +29,7 @@ import com.sample.android.tmdb.R
 import com.sample.android.tmdb.domain.model.FeedWrapper
 import com.sample.android.tmdb.domain.model.Movie
 import com.sample.android.tmdb.domain.model.SortType
+import com.sample.android.tmdb.domain.model.TVShow
 import com.sample.android.tmdb.domain.model.TmdbItem
 import com.sample.android.tmdb.ui.common.Dimens
 import com.sample.android.tmdb.ui.common.TmdbTheme
@@ -38,7 +39,6 @@ import com.sample.android.tmdb.util.conditional
 
 @Composable
 fun FeedScreen(
-    navType: NavType,
     collection: List<FeedWrapper>,
     onFeedClick: (TmdbItem) -> Unit
 ) {
@@ -46,7 +46,6 @@ fun FeedScreen(
         itemsIndexed(collection) { index, feedCollection ->
             FeedCollection(
                 feedCollection = feedCollection,
-                navType = navType,
                 onFeedClick = onFeedClick,
                 index = index
             )
@@ -57,7 +56,6 @@ fun FeedScreen(
 @Composable
 private fun FeedCollection(
     feedCollection: FeedWrapper,
-    navType: NavType,
     onFeedClick: (TmdbItem) -> Unit,
     index: Int,
     modifier: Modifier = Modifier,
@@ -88,8 +86,8 @@ private fun FeedCollection(
                     .padding(Dimens.PaddingNormal)
                     .clickable {
                         moreFeedOnClick(
+                            feedCollection.feeds[0],
                             context,
-                            navType,
                             feedCollection.sortType
                         )
                     }
@@ -158,12 +156,12 @@ private fun TmdbCard(
 }
 
 private fun moreFeedOnClick(
+    tmdbItem: TmdbItem,
     context: Context,
-    navType: NavType,
     sortType: SortType
 ) {
-    val activityClass = when (navType) {
-        NavType.MOVIES -> {
+    val activityClass = when (tmdbItem) {
+        is Movie -> {
             when (sortType) {
                 SortType.TRENDING -> {
                     TrendingMoviesActivity::class.java
@@ -191,7 +189,7 @@ private fun moreFeedOnClick(
             }
         }
 
-        NavType.TV_SERIES -> {
+        is TVShow -> {
             when (sortType) {
                 SortType.TRENDING -> {
                     TrendingTVShowActivity::class.java

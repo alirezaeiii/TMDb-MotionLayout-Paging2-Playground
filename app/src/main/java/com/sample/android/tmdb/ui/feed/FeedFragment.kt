@@ -21,10 +21,9 @@ abstract class FeedFragment<T : TmdbItem> : BaseNavigationFragment<Nothing>() {
     ): View {
         return composeView {
             TmdbTheme {
-                Content(viewModel) {
+                Content(viewModel) { feedWrapper ->
                     FeedScreen(
-                        navType,
-                        it
+                        feedWrapper
                     ) { tmdbItem ->
                         startDetailActivity(tmdbItem)
                     }
