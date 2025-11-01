@@ -119,5 +119,5 @@ fun View.toVisibility(visible: Boolean) {
 
 @BindingAdapter("visibility")
 fun <T> toVisibility(view: View, list: List<T>?) {
-    view.visibility = if (list == null || list.isEmpty()) View.GONE else View.VISIBLE
+    view.visibility = if (list.isNullOrEmpty()) View.GONE else View.VISIBLE
 }
