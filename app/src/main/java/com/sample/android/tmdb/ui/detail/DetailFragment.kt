@@ -74,7 +74,7 @@ abstract class DetailFragment : BaseDetailFragment<DetailViewModel, FragmentDeta
                 progress: Float
             ) {
                 binding.detailsAppbarBackground.cutProgress = 1f - progress
-                binding.detailsPoster .visibility = View.VISIBLE
+                binding.detailsPoster.visibility = View.VISIBLE
             }
 
             @SuppressLint("RestrictedApi")
@@ -84,6 +84,7 @@ abstract class DetailFragment : BaseDetailFragment<DetailViewModel, FragmentDeta
                         binding.detailsAppbarBackground.cutProgress = 0f
                         binding.detailsPoster.visibility = View.GONE
                     }
+
                     R.id.start -> {
                         binding.detailsAppbarBackground.cutProgress = 1f
                         binding.detailsPoster.visibility = View.VISIBLE
@@ -93,7 +94,7 @@ abstract class DetailFragment : BaseDetailFragment<DetailViewModel, FragmentDeta
         })
     }
 
-    private fun <T : Credit> RecyclerView.setupAdapter(items: List<T>) {
+    private fun RecyclerView.setupAdapter(items: List<Credit>) {
         layoutManager = GridLayoutManager(
             activity, 1,
             GridLayoutManager.HORIZONTAL, false

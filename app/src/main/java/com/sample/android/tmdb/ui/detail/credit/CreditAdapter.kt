@@ -8,12 +8,12 @@ import com.sample.android.tmdb.databinding.CreditItemBinding
 import com.sample.android.tmdb.domain.model.Credit
 import com.sample.android.tmdb.util.layoutInflater
 
-class CreditAdapter<T : Credit>(
-        credits: List<T>,
-        private val creditClickCallback: CreditClickCallback<T>)
+class CreditAdapter(
+        credits: List<Credit>,
+        private val creditClickCallback: CreditClickCallback<Credit>)
     : RecyclerView.Adapter<CreditAdapter.CreditViewHolder>() {
 
-    private var credits: List<T> = credits
+    private var credits: List<Credit> = credits
         set(credit) {
             field = credit
             notifyDataSetChanged()
