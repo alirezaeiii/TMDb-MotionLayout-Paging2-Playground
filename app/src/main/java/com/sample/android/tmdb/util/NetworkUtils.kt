@@ -13,12 +13,14 @@ import androidx.lifecycle.Transformations
 
 class NetworkUtils(application: Application) : ConnectivityManager.NetworkCallback() {
 
-    private val networkLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private val _networkLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val networkLiveData: LiveData<Boolean>
+        get() = Transformations.distinctUntilChanged(_networkLiveData)
 
     private val connectivityManager =
         application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    fun getNetworkLiveData(): LiveData<Boolean> {
+    fun observeNetwork() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.registerDefaultNetworkCallback(this)
         } else {
@@ -34,14 +36,10 @@ class NetworkUtils(application: Application) : ConnectivityManager.NetworkCallba
             networkCapability?.let {
                 if (it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                     isConnected = true
-                    return@forEach
                 }
             }
         }
-
-        networkLiveData.postValue(isConnected)
-
-        return Transformations.distinctUntilChanged(networkLiveData)
+        _networkLiveData.postValue(isConnected)
     }
 
     fun unregister() {
@@ -49,10 +47,10 @@ class NetworkUtils(application: Application) : ConnectivityManager.NetworkCallba
     }
 
     override fun onAvailable(network: Network) {
-        networkLiveData.postValue(true)
+        _networkLiveData.postValue(true)
     }
 
     override fun onLost(network: Network) {
-        networkLiveData.postValue(false)
+        _networkLiveData.postValue(false)
     }
 }

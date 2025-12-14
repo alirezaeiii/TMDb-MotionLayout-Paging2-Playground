@@ -6,15 +6,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.ViewModelProvider
 import com.sample.android.tmdb.R
-import com.sample.android.tmdb.util.NetworkUtils
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 abstract class BaseActivity : DaggerAppCompatActivity() {
 
     @Inject
-    lateinit var networkUtils: NetworkUtils
+    lateinit var factory: NetworkViewModel.Factory
+
+    private val viewModel:NetworkViewModel by lazy {
+        ViewModelProvider(this, factory)[NetworkViewModel::class.java]
+    }
 
     protected abstract val networkStatusLayout: View
 
@@ -25,13 +29,8 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
         handleNetwork()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        networkUtils.unregister()
-    }
-
     private fun handleNetwork() {
-        networkUtils.getNetworkLiveData().observe(this) { isConnected: Boolean ->
+        viewModel.networkLiveData.observe(this) { isConnected: Boolean ->
             if (!isConnected) {
                 textViewNetworkStatus.text = getString(R.string.failed_network_msg)
                 networkStatusLayout.visibility = View.VISIBLE
