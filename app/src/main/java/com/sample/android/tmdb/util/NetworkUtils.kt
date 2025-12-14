@@ -28,22 +28,16 @@ class NetworkUtils(application: Application) : ConnectivityManager.NetworkCallba
             connectivityManager.registerNetworkCallback(builder.build(), this)
         }
 
-        var isConnected = false
 
         connectivityManager.allNetworks.forEach { network ->
             val networkCapability = connectivityManager.getNetworkCapabilities(network)
 
             networkCapability?.let {
                 if (it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-                    isConnected = true
+                    _networkLiveData.postValue(true)
                 }
             }
         }
-        _networkLiveData.postValue(isConnected)
-    }
-
-    fun unregister() {
-        connectivityManager.unregisterNetworkCallback(this)
     }
 
     override fun onAvailable(network: Network) {
@@ -52,5 +46,9 @@ class NetworkUtils(application: Application) : ConnectivityManager.NetworkCallba
 
     override fun onLost(network: Network) {
         _networkLiveData.postValue(false)
+    }
+
+    fun unregister() {
+        connectivityManager.unregisterNetworkCallback(this)
     }
 }
